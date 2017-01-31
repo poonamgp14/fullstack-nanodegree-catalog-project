@@ -1,0 +1,16 @@
+<html>
+<body>
+	<h1> Delete a Item</h1>
+	<div>
+	<form action='{{url_for("deleteItem",category_id=category_id, item_id=item_id)}}' method="POST">
+	<span>Name</span>
+	<input type="text" size = '30' name="name" placeholder="{{item.name}}">
+	</br></br>
+	<span>Description</span>
+	<input type="text" size = '60' name="description" placeholder="{{item.description}}">
+	<input type="submit" value="Delete">
+	</form>
+	</div>
+
+</body>
+</html>
