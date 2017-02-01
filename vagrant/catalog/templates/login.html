@@ -17,13 +17,26 @@
 <body>
 
 
-<!-- GOOGLE PLUS SIGN IN BUTTON-->
+<!-- GOOGLE PLUS SIGN IN BUTTON
+data-scope specifies what google presource we want to be able
+to access and openid as gor username, email address, profile picture
+data-redirecr url sets a post message enables one-time use code flow
+data-accesstype="offline" means out server can make requests to
+google api server even if the user is not logged in
+data-cookiepolicy="single_host_origin" determines the scope of uris that can access the cookie. we user single host origin if our
+website only has a single host name, and no subdomain
+data-callback="signInCallback" it is callback function when a user grants out application access to their profile, this call back is called and given the one time use code along with an access token
+data-approvalprompt="force" means that out users has to login
+each time we visit the login page and doesn't check to see if they
+are already logged in. it should only be used in debugging or
+development since it gets annoying in production phase
+-->
 
 
           <div id="signInButton">
           <span class="g-signin"
             data-scope="openid email"
-            data-clientid="YOUR_CLIENT_ID_GOES_HERE.apps.googleusercontent.com"
+            data-clientid="901909468919-lpup9stnsaq0c5ck8u8i5st43ms94frm.apps.googleusercontent.com"
             data-redirecturi="postmessage"
             data-accesstype="offline"
             data-cookiepolicy="single_host_origin"
@@ -31,8 +44,47 @@
             data-approvalprompt="force">
           </span>
         </div>
+    <div id="result"></div>
+<script>
+// callback to handle the response that google sends back to
+// the client. The google api server along with successful response, sends both ne-time-use code (to authorize our server) and access token (that the clinet can use to make API calls from
+// within the browser as well)
+function signInCallback(authResult) {
+  // if google api server responds with ne-time-use code then it means
+  // our authorization with google api server was successful
+  if (authResult['code']) {
+    // Hide the sign-in button now that the user is authorized
+    $('#signinButton').attr('style', 'display: none');
+    //makes an ajax request to the server to pass one time code google-server gave the client onto the server
+    // Send the one-time-use code to the server, , write a 'login successful' message to the web page and then redirect back to the main restaurants page
+    $.ajax({
+      type: 'POST',
+      url: '/gconnect?state={{STATE}}',//method on the server to be called on and pass the server state token to verfity against the cross-site reference forgery attack
+      processData: false, //we don't want jquery to process the response into a string
+      data: authResult['code'],//sending code to server
+      //indicate we are sending arbitary binary stream of data
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        // Handle or verify the server response if necessary.
+        //if our server responds
+        if (result) {
+          //successful message and then redirect to the main page
+          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+         setTimeout(function() {
+          window.location.href = "/";
+         }, 4000);
 
+      }
+      // if error reciived from google server for authorization
+      else if (authResult['error']) {
+    console.log('There was an error: ' + authResult['error']);
+  } else { //if no response was returned by my server to the callback
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+         }
+      }
 
+  }); } }
+</script>
 
 
 <!--END GOOGLE PLUS SIGN IN BUTTON -->
