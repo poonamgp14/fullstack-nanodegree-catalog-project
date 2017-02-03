@@ -86,6 +86,7 @@ def gconnect():
         return response
 
     # Check that the access token is valid.
+    # login_session['credentials'] = credentials.access_token
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
            % access_token)
@@ -122,7 +123,7 @@ def gconnect():
         return response
 
     # Store the access token in the session for later use.
-    login_session['credentials'] = credentials
+    login_session['credentials'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
     # Get user info
@@ -147,6 +148,38 @@ def gconnect():
     print "done!"
     return output
 
+# DISCONNECT - Revoke a current user's token and reset their login_session
+# disconnect by telling the server to reject its access token
+@app.route('/gdisconnect')
+def gdisconnect():
+    access_token = login_session['access_token']
+    print 'In gdisconnect access token is %s', access_token
+    print 'User name is: '
+    print login_session['username']
+    if access_token is None:
+ 	print 'Access Token is None'
+    	response = make_response(json.dumps('Current user not connected.'), 401)
+    	response.headers['Content-Type'] = 'application/json'
+    	return response
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    print 'result is '
+    print result
+    if result['status'] == '200':
+        del login_session['access_token']
+    	del login_session['gplus_id']
+    	del login_session['username']
+    	del login_session['email']
+    	del login_session['picture']
+    	response = make_response(json.dumps('Successfully disconnected.'), 200)
+    	response.headers['Content-Type'] = 'application/json'
+    	return response
+    else:
+
+    	response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+    	response.headers['Content-Type'] = 'application/json'
+    	return response
 #route() decorator to tell Flask what URL should trigger our function
 @app.route('/')
 def HelloWorld():
@@ -173,6 +206,8 @@ def menuItemJSON(category_id, item_id):
 
 @app.route('/category/<int:category_id>/new/', methods=['GET','POST'])
 def newItem(category_id):
+    if 'username' not in login_session:
+        return redirect('/login')
 	if request.method == 'POST':
 		newItem = Items(name=request.form['name'],
 			description=request.form['description'],
@@ -186,8 +221,10 @@ def newItem(category_id):
 
 @app.route('/category/<int:category_id>/<int:item_id>/edit/', methods=['GET','POST'])
 def editItem(category_id, item_id):
-	editedItem = session.query(Items).filter_by(id = item_id).one()
-	if request.method == 'POST':
+    if 'username' not in login_session:
+        return redirect('/login')
+    editedItem = session.query(Items).filter_by(id = item_id).one()
+    if request.method == 'POST':
 		if request.form['name']:
 			editedItem.name = request.form['name']
 			editedItem.description = request.form['description']
@@ -195,7 +232,7 @@ def editItem(category_id, item_id):
 		session.commit()
 		flash("The selected item is edited!")
 		return redirect(url_for('HelloCatalog',category_id=category_id))
-	else:
+    else:
 		return render_template('editItem.html', category_id=category_id,
 			item_id = item_id,item = editedItem)
 	# return "page to edit a menu item. Task 2 complete!"
@@ -204,13 +241,15 @@ def editItem(category_id, item_id):
 
 @app.route('/category/<int:category_id>/<int:item_id>/delete/', methods=['GET','POST'])
 def deleteItem(category_id, item_id):
-	deletedItem = session.query(Items).filter_by(id = item_id).one()
-	if request.method == 'POST':
+    if 'username' not in login_session:
+        return redirect('/login')
+    deletedItem = session.query(Items).filter_by(id = item_id).one()
+    if request.method == 'POST':
 		session.delete(deletedItem)
 		session.commit()
 		flash("The selected Item  is deleted!")
 		return redirect(url_for('HelloCatalog',category_id=category_id))
-	else:
+    else:
 		return render_template('deleteItem.html', category_id=category_id,
 			item_id = item_id,item = deletedItem)
 
