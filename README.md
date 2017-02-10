@@ -8,6 +8,6 @@ Either clone the repository using git clone command, or use the download ZIP lin
 - Launch vagrant using ***vagrant up*** and ***vagrant ssh***
 - This launches vagrant and cd to the catalog folder
 - Run ***python catalogDB.py*** to create database for the project
-- Run ***\python catalogDBData.py*** to fill the data in the database
-- Run Run ***\python project.py*** to run the server
-- Open the link ####http://localhost:5080/ in the web browser
+- Run ***python catalogDBData.py*** to fill the data in the database
+- Run Run ***python project.py*** to run the server
+- Open the link ***http://localhost:5080/*** in the web browser
