@@ -1,16 +1,13 @@
 rdb-fullstack
 =============
 
-Common code for the Relational Databases and Full Stack Fundamentals courses
-
-
 ##Installation
 
 Either clone the repository using git clone command, or use the download ZIP link on the right hand side of the screen.In order to run the code:
-- cd to the project folder
+- cd to the folder and cd to catalog directory
 - Launch vagrant using ***vagrant up*** and ***vagrant ssh***
-- This launches vagrant and cd to the tournament folder
-- Run ***psql*** to launch CLI for Postgresql database server
-- Run ***\i tournament.sql*** to create the database
-- Quit the psql CLI using ***\q***
-- Run ***python tournament_test.py***
+- This launches vagrant and cd to the catalog folder
+- Run ***python catalogDB.py*** to create database for the project
+- Run ***\python catalogDBData.py*** to fill the data in the database
+- Run Run ***\python project.py*** to run the server
+- Open the link ####http://localhost:5080/ in the web browser

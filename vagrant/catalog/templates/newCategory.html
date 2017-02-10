@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+    New Category
+{% endblock %}
+{% block content %}
+			<h1>Add a new Category</h1>
+	<div>
+			<form action="#" method = "post">
+				<label for="name">Name:</label>
+				<input type ="text" class="form-control" maxlength="100" name="name">
+				<label for="name">Description:</label>
+				<input type ="text" class="form-control" maxlength="200" name="description">
+				<button type="submit" class="btn btn-default" id="submit" type="submit">
+				<span aria-hidden="true"></span>Create</button>
+			</form>
+		</div>
+{% endblock %}

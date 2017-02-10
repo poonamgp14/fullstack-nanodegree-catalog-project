@@ -1,0 +1,76 @@
+body,html{
+    width: 100%;
+    overflow-x: hidden;
+    height: 100%;
+    overflow-y:scroll;
+}
+
+.content{
+  width:100%;
+}
+
+#signInButton{
+	top: 100px;
+	margin: 0 auto;
+}
+
+#footer {
+   position:fixed;
+   bottom:0;
+   width:100%;
+   height:30px;
+   background:black;
+   text-align: center;
+   color: white;
+   margin-top:10px;
+}
+
+.header{
+  top:0;
+  position: fixed;
+  /*position:absolute;*/
+  width:100%;
+  height:50px;
+  background-color:black;
+  color: white;
+}
+
+#home-login{
+  width: 100%;
+  top:100px;
+  margin:0 auto;
+  height: 400px;
+}
+
+.flash{
+	color:white;
+	font-weight: bold;
+  background-color: green;
+}
+
+.container{
+  /*display: flex;*/
+  /*width: 33% !important;*/
+  /*margin: 0 auto;*/
+
+}
+
+.category-container{
+  width:50%;
+  display: flex;
+  margin: 0 auto 10px auto;
+  height: 100%;
+}
+
+.single-category,.panel, .flash-container, .content{
+  width: 100%;
+}
+
+.single-category{
+  margin:10px;
+}
+
+
+.flash-list{
+  width:40%;
+}

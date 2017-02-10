@@ -1,6 +1,7 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+import datetime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -12,24 +13,37 @@ Base = declarative_base()
 #Instead of writing code for all three components separately, sqlalchemy's declarative allows
 # all three to be defined at once in one class definition
 
-class Categories(Base):
-	__tablename__ = 'categories'
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    picture = Column(String(250))
+
+class Category(Base):
+	__tablename__ = 'category'
 	# Here we define columns for the table
 	# Notice that each column is also a normal Python instance attribute.
 	id = Column(Integer, primary_key=True)
 	name = Column(String(50), nullable=False)
-	description = Column(String(250),nullable=False)
+	description = Column(String(250),nullable=True)
+	user_id = Column(Integer, ForeignKey('user.id'))
+	user = relationship(User)
 
 
-class Items(Base):
-	__tablename__ = 'items'
+class Item(Base):
+	__tablename__ = 'item'
 	# Here we define columns for the table
 	# Notice that each column is also a normal Python instance attribute.
 	id = Column(Integer, primary_key=True)
 	name = Column(String(50), nullable=False)
-	description = Column(String(250),nullable=False)
-	category_id = Column(Integer, ForeignKey('categories.id'))
-	categories = relationship(Categories)
+	description = Column(String(250),nullable=True)
+	created_date = Column(DateTime, nullable=False, default=datetime.datetime.utcnow)
+	category_id = Column(Integer, ForeignKey('category.id'))
+	category = relationship(Category)
+	user_id = Column(Integer, ForeignKey('user.id'))
+	user = relationship(User)
 
 
 # We added this serialize function to be able to send JSON objects in a
@@ -47,8 +61,10 @@ class Items(Base):
 
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
-engine = create_engine('sqlite:///catalog_app.db')
-
+# engine = create_engine('sqlite:///catalog_app.db')
+# engine = create_engine('sqlite:///catalog_appWithUsers2.db')
+engine = create_engine('sqlite:///groceryCatalog3.db')
+# sqlite:///groceryCatalog.db
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.
 Base.metadata.create_all(engine)

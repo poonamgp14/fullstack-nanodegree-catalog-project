@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}
+    Items
+{% endblock %}
+{% block content %}
+	<div class='flash-container'>
+	<h1 class="text-center"> List of Available Items for <i>{{category.name}}</i></h1>
+	{% with messages = get_flashed_messages(category_filter=["newItem","editItem","deleteItem","notAuthorized"]) %}
+		{% if messages %}
+			<ul class="text-right list-unstyled flash-list">
+    		{% for message in messages %}
+        		<li class="text-right"> <strong class="flash"> {{ message }} </strong> </li>
+    		{% endfor %}
+    		</ul>
+		{% endif %}
+	{% endwith %}
+	</div>
+		<div class="row padding-top padding-bottom">
+			<a href='{{url_for("newItem", category_id=category.id)}}'>
+				<button class="btn btn-info">
+					<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Add a new Item
+				</button>
+			</a>
+	</div>
+	<div class="container">
+	{% for i in items %}
+		<div class="panel panel-default single-category">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+				<a href = "{{url_for('showACategory',category_id = category.id)}}">
+				{{i.name}}</a></h3>
+			</div>
+			<div class="panel-body">
+				{{i.description}} <br>
+				<a href = '{{url_for("editItem", category_id=i.category_id, item_id=i.id)}}'>Edit</a>
+				<a href = '{{url_for("deleteItem", category_id=i.category_id, item_id=i.id)}}'>Delete</a>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+{% endblock %}

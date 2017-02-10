@@ -1,5 +1,8 @@
-<html>
-<body>
+{% extends "base.html" %}
+{% block title %}
+    Edit Item
+{% endblock %}
+{% block content %}
 	<h1> Edit a Item</h1>
 	<div>
 	<form action='{{url_for("editItem",category_id=category_id, item_id=item_id)}}' method="POST">
@@ -8,9 +11,8 @@
 	</br></br>
 	<span>Description</span>
 	<input type="text" size = '60' name="description" placeholder="{{item.description}}">
-	<input type="submit" value="Edit">
+	<input type="submit" value="Edit" name="submitEdit">
+	<input type="submit" value="Cancel" name="cancelEdit">
 	</form>
 	</div>
-
-</body>
-</html>
+{% endblock %}
