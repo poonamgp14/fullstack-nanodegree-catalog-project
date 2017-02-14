@@ -3,6 +3,7 @@
     Items
 {% endblock %}
 {% block content %}
+{% include "home.html" %}
 	<div class='flash-container'>
 	<h1 class="text-center"> List of Available Items for <i>{{category.name}}</i></h1>
 	{% with messages = get_flashed_messages(category_filter=["newItem","editItem","deleteItem","notAuthorized"]) %}

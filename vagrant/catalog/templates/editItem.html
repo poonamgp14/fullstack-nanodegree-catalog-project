@@ -3,6 +3,7 @@
     Edit Item
 {% endblock %}
 {% block content %}
+{% include "home.html" %}
 	<h1> Edit a Item</h1>
 	<div>
 	<form action='{{url_for("editItem",category_id=category_id, item_id=item_id)}}' method="POST">

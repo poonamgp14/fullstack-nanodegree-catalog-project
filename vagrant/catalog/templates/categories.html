@@ -3,9 +3,10 @@
     Categories List
 {% endblock %}
 {% block content %}
+{% include "home.html" %}
 <div class='flash-container'>
 	<h1 class="text-center"> List of Available Categories</h1>
-	{% with messages = get_flashed_messages(category_filter=["login", "newCategory"]) %}
+	{% with messages = get_flashed_messages(category_filter=["login", "newCategory","logout"]) %}
 		{% if messages %}
 			<ul class="text-right list-unstyled flash-list">
     		{% for message in messages %}

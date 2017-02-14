@@ -3,21 +3,16 @@
     Categories List
 {% endblock %}
 {% block content %}
-	<div class="row">
-		<div class="col-md-10"></div>
-		<div class="col-md-2 text-right">
-			<a href="{{url_for('showLogin')}}">Click Here to Log in </a>
-		</div>
-	</div>
+{% include "home.html" %}
 	<div class='flash-container'>
 	<h1 class="text-center"> List of Available Categories</h1>
-	{% with messages = get_flashed_messages(category_filter=["login", "newCategory"]) %}
+	{% with messages = get_flashed_messages(category_filter=["login", "newCategory","logout"]) %}
 		{% if messages %}
 			<ul class="text-right list-unstyled flash-list">
-    		{% for message in messages %}
-        		<li class="text-right"> <strong class="flash"> {{ message }} </strong> </li>
-    		{% endfor %}
-    		</ul>
+			{% for message in messages %}
+				<li class="text-right"> <strong class="flash"> {{ message }} </strong> </li>
+			{% endfor %}
+			</ul>
 		{% endif %}
 	{% endwith %}
 </div>
