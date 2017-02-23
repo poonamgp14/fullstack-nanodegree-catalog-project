@@ -37,7 +37,8 @@ APPLICATION_NAME = "Catalog Application"
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
 # engine = create_engine('sqlite:///catalog_app.db')
-engine = create_engine('sqlite:///groceryCatalog3.db')
+# engine = create_engine('sqlite:///groceryCatalog3.db')
+engine = create_engine('sqlite:///catalog.db')
 # engine = create_engine('sqlite:///catalog_appWithUsers2.db')
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.

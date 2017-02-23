@@ -68,7 +68,8 @@ class Item(Base):
 # sqlalchemy_example.db file.
 # engine = create_engine('sqlite:///catalog_app.db')
 # engine = create_engine('sqlite:///catalog_appWithUsers2.db')
-engine = create_engine('sqlite:///groceryCatalog3.db')
+# engine = create_engine('sqlite:///groceryCatalog3.db')
+engine = create_engine('sqlite:///catalog.db')
 # sqlite:///groceryCatalog.db
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.
